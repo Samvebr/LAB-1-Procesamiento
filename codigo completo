@@ -1,0 +1,85 @@
+import wfdb
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import norm
+
+# Ruta del archivo (IMPORTANTE:los archivos .dat y .hea estén en la misma carpeta, si no esta vaina no funciona)
+record_name = 'a04'  # Sin colocar el .dat o .hea asi el nombre solito :,)
+
+# Leer los datos de la señal y encabezado
+record = wfdb.rdrecord(record_name)  # Lee los archivos .dat y .hea
+signal = record.p_signal  # Obtiene la señal en formato de matriz
+fs = record.fs  # Frecuencia de muestreo
+canales = record.sig_name  # Nombres de los canales (derivaciones)
+duracion = len(signal) / fs  # Duración de la señal en segundos
+
+# Mostrar información del archivo
+print(f"Frecuencia de muestreo: {fs} Hz")
+print(f"Duración de la señal: {duracion:.2f} segundos")
+print(f"Canales disponibles: {canales}")
+
+# Crear un DataFrame con la señal
+time = [i / fs for i in range(len(signal))]  # Eje de tiempo en segundos
+df = pd.DataFrame(signal, columns=canales)  # Columnas con los nombres de los canales
+df.insert(0, "Time (s)", time)  # Añadir la columna de tiempo
+
+# Limitar los datos a los primeros 10 segundos
+max_time = 20  # Duración en segundos que queremos graficar
+max_samples = int(fs * max_time)  # Número de muestras correspondientes a 10 segundos
+limited_time = time[:max_samples]
+limited_signal = signal[:max_samples, :]
+
+# Graficar la señal ECG de los primeros 10 segundos
+plt.figure(figsize=(12, 6))
+for i, canal in enumerate(canales):
+    plt.plot(limited_time, limited_signal[:, i], label=canal)
+plt.title("Señal ECG - Primeros 10 Segundos")
+plt.xlabel("Tiempo (s)")
+plt.ylabel("Amplitud (mV)")
+plt.legend()
+plt.grid()
+plt.tight_layout()
+plt.show()
+
+# Calcular estadísticas y graficar histograma con densidad de probabilidad para cada canal
+for i, canal in enumerate(canales):
+    channel_data = limited_signal[:, i]  # Extraer los datos del canal actual
+
+    # Calcular estadísticas
+    mean = np.mean(channel_data)  # Media
+    std_dev = np.std(channel_data)  # Desviación estándar
+    coeff_var = (std_dev / mean) * 100  # Coeficiente de variación en porcentaje
+
+    # Mostrar estadísticas
+    print(f"\nEstadísticas para {canal} usando funciones:")
+    print(f"- Media: {mean:.4f} mV")
+    print(f"- Desviación estándar: {std_dev:.4f} mV")
+    print(f"- Coeficiente de variación: {coeff_var:.2f} %")
+
+    # Graficar histograma y densidad de probabilidad
+    plt.figure(figsize=(10, 6))
+    count, bins, _ = plt.hist(
+        channel_data,
+        bins=30,
+        density=False,  # Altura relativa al número de datos (frecuencia)
+        alpha=0.6,
+        color="b",
+        label="Histograma",
+    )
+
+    # Escalar la densidad de probabilidad para que coincida con el histograma
+    bin_width = bins[1] - bins[0]  # Ancho de los bins del histograma
+    pdf = norm.pdf(bins, mean, std_dev)  # Función de densidad de probabilidad
+    scaled_pdf = pdf * len(channel_data) * bin_width  # Escalar al histograma
+
+    plt.plot(bins, scaled_pdf, "r-", label="Densidad de probabilidad")
+    plt.title(f"Histograma y Densidad de Probabilidad - {canal}")
+    plt.xlabel("Amplitud (mV)")
+    plt.ylabel("Frecuencia")
+    plt.legend()
+    plt.grid()
+    plt.tight_layout()
+    plt.show()
+
+# Mostrar estadisticas con formulas desde cero 
