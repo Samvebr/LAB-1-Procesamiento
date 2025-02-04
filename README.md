@@ -1,9 +1,6 @@
 # LAB-1-Procesamiento
 El análisis de señales biomédicas permite extraer información relevante mediante herramientas estadísticas. Estas señales contienen datos útiles, como amplitud y frecuencia, pero también ruido. En este laboratorio, se emplearán señales fisiológicas extraídas de la base de datos de Physionet, y empleando el compilador Python se calcularán sus estadísticos descriptivos (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad) utilizando funciones predefinidas y programando desde cero. Además, se analizará la relación señal-ruido (SNR) al contaminarlas con distintos tipos de ruido (gaussiano, ruido de impulso y ruido de artefacto).
 
-[Image](https://github.com/user-attachments/assets/3b2f9c28-a61e-4b8a-b396-c2bbef6cad50)
-
-
 ## Grafica de la señal y datos estadisticos.
 
 - En la base de datos de Physionet se escogió la señal “a04.dat” y “a04.hea” del estudio Apnea-ECG Database, para que el código pueda leer correctamente los archivos es necesario que se encuentren dentro de la misma carpeta del proyecto.
@@ -61,4 +58,46 @@ print (texto_estadisticas)
 - La función “graficar_senal” tiene como parámetros tiempo, senal, canales, tiempo_max, titulo, “texto_anotacion=None”, se establecen los parámetros y el tamaño de la muestra de la señal que se quiere graficar, luego se escoge el tamaño de la gráfica, el nombre de los ejes, el titulo del gráfico, la cuadrilla y se escribe la instrucción plt.show() para que se muestre el grafico.
 
 ```bash
+def graficar_senal(tiempo,senal,canales,tiempo_max,titulo, texto_anotacion=None):
+
+muestra_max = int(fs *tiempo_max)
+tiempo_limitado = tiempo[:muestras_max]
+senal_limitada = senal[:muestras_max, :]
+fig, ax= plt.subplots(figsize=(12, 6))
+for i, canal in enumerate(canales):
+ ax.plot(tiempo_limitado, senal_limitada[:, i], label=canal)
+ax.set_title(titulo)
+ax.set_xlabel("tiempo (s)")
+ax.set_ylabel("amplitud (mV)")
+ax.legend()
+ax.grid()
+if texto_anotacion is not None:
+
+  ax.text(0.02, 0.98, texto_anotacion, trasform=ax.transAxes, fontsize=10,
+          verticalaligment=?'top', bbox=dict(facecolor='white', alpha=0.7))
+plt.tight_layout()
+plt.show()
+```
+
+## Calculos estadisticos.
+
+- Media: se utiliza el comando mean y los datos del vector precedido por la librería numpy.
+- Desviación estándar: se utiliza el comando std y los datos del vector precedido por la librería numpy.
+- El coeficiente de variación: se calcula con las variables de desviación entre la media multiplicado por 100.
+  
+ Posteriormente se muestran los datos calculados en pantalla y se retorna la variable que los contiene, como se muestra a continuación:
+
+ ```bash
+def calcular_estadisticas_texto(senal, muestra_max):
+
+texto=""
+num_canales = senal.shape[1]
+for canal in range(num_canales):
+datos = senal[:muestras_max, canal]
+media = np.mean(datos)
+desviacion = np.std(datos)
+coeff_var= (desviacion/media) * 100
+texto += f"Canal {canal+1}:\nMedia = {media::2f} mV\nDesv = {desviacion:.2f} mV
+return texto
+```
   
