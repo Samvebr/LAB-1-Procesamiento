@@ -100,4 +100,24 @@ coeff_var= (desviacion/media) * 100
 texto += f"Canal {canal+1}:\nMedia = {media::2f} mV\nDesv = {desviacion:.2f} mV
 return texto
 ```
-  
+##Grafica.
+
+![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
+
+Estadisticas del ECG:
+- Media: 0.0061 mV
+- Desviacion estandar: 0.3507 mV
+- coeficiente de variación: 5753.52 %
+
+##Histograma.
+ 
+Para la grafica del histograma y la densidad de probabilidad de la señal, se definió la función “calcular_estadisticas_y_histograma” que contiene los parámetros de senal,     canales y muestras_max, los otros comandos utilizados son:
+
+- Plt.hist: genera un histograma de la amplitud de la señal. 
+- Bins: divide el rango en los valores deseados.
+- Density: muestra el conteo absoluto de muestras en cada intervalo. 
+- Edgecolor: para especificar el contorno de las barras.
+- Conteo: numero de datos en cada bin del histograma.
+- Bordes: lista con los bordes de cada bin del histograma. 
+- norm.pdf(bordes, media, desv_std): calcula la función de densidad de probabilidad normal (Pdf) con la media de deviación estándar de la señal.
+- Plt.plot: Grafica la curva en rojo.
