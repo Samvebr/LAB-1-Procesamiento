@@ -124,20 +124,36 @@ texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\
 ## Calculos estadísticos (Manual)
 
 ```bash
-def calcular_estadisticas(senal, muestras_max):
+def calcular_estadisticas_manual(datos):
+    """
+    Calcula la media, la desviación estándar y el coeficiente de variación para un arreglo de datos,
+    usando ciclos 'for' y sin funciones como sum, np.mean o np.std.
+    Retorna: (media, desviacion, coeff_var)
+    """
+    n = 0
+    suma = 0.0
+    # Calcular la suma de los elementos y contar cuantos hay
+    for valor in datos:
+        suma = suma + valor
+        n = n + 1
+    if n == 0:
+        return 0, 0, 0  # En caso de arreglo vacío
+    media = suma / n
+    
+    suma_varianza = 0.0
+    # Calcular la suma de (valor - media)^2 para todos los elementos
+    for valor in datos:
+        diferencia = valor - media
+        suma_varianza = suma_varianza + (diferencia * diferencia)
+    varianza = suma_varianza / n
+    desviacion = varianza ** 0.5  # Raíz cuadrada de la varianza
+    # Calcular el coeficiente de variación (en porcentaje)
+    if media != 0:
+        coeff_var = (desviacion / media) * 100
+    else:
+        coeff_var = 0
+    return media, desviacion, coeff_var
 
-    resultados = {}
-    for i, canal in enumerate(canales):
-        datos = [senal[j][i] for j in range(muestras_max)]
-        media = sum(datos) / len(datos)
-        desviacion = (sum((x - media) ** 2 for x in datos) / len(datos)) ** 0.5
-        coef_var = (desviacion / media) * 100 if media != 0 else None
-        resultados[canal] = {"Media": media, "Desviación": desviacion, "Coef. Variación": coef_var}
-    return resultados
-
-estadisticas = calcular_estadisticas(senal, muestras_max)
-for canal, valores in estadisticas.items():
-    print(f"{canal}: Media={valores['Media']:.4f} mV, Desv.={valores['Desviación']:.4f} mV, Coef. Var.={valores['Coef. Variación']:.2f}%")
 
 ```
 ## Gráfica.
