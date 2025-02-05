@@ -234,6 +234,8 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
 - Obteniendo como resultado las siguientes graficas con amplitudes y SNR diferentes.
 
 ### Grafica con amplitud 2.0
+![Image](https://github.com/user-attachments/assets/e7c57435-8f4d-42b0-8a0a-639a282c861c)
 
 ### Grafica con amplitud 5.0
+![Image](https://github.com/user-attachments/assets/69c11500-f773-466b-a903-fe90b1644e09)
 
