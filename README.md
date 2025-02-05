@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 ```
-- Para graficar la señal se empieza colocando el nombre del archivo en la variable nombre_registro y el tiempo que se desea a analizar y graficar, para nuestro caso 10s.
+- Para gráficar la señal se empieza colocando el nombre del archivo en la variable nombre_registro y el tiempo que se desea a analizar y graficar, para nuestro caso 10s.
 
 ```bash
 nombre_registo ='a04'
@@ -67,7 +67,7 @@ df.insert(0, "Time (s)", tiempo)
 return senal, fs, canales, tiempo, df
 
 ```
-- Después se grafico los primeros 10 segundos de la señal empleando la función graficar señal, además se muestra en la gráfica los datos estadísticos de la señal, los cuales se obtienen a partir de la función calcular_estadisticas_texto que tiene como parámetros la señal y los primero 10 segundos y muestra en consola los datos estadísticos de la señal (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad).
+- Después se gáfico los primeros 10 segundos de la señal empleando la función graficar señal, además se muestra en la gráfica los datos estadísticos de la señal, los cuales se obtienen a partir de la función calcular_estadisticas_texto que tiene como parámetros la señal y los primero 10 segundos y muestra en consola los datos estadísticos de la señal (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad).
 
 ```bash
 texto_estadisticas = calcular_estadisticas_texto(senal, muestras_max)
@@ -100,7 +100,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Calculos estadisticos (funciones numpy)
+## Calculos estadísticos (funciones numpy)
 
 - Media: se utiliza el comando mean y los datos del vector precedido por la librería numpy.
 - Desviación estándar: se utiliza el comando std y los datos del vector precedido por la librería numpy.
@@ -140,7 +140,7 @@ for canal, valores in estadisticas.items():
     print(f"{canal}: Media={valores['Media']:.4f} mV, Desv.={valores['Desviación']:.4f} mV, Coef. Var.={valores['Coef. Variación']:.2f}%")
 
 ```
-## Grafica.
+## Gráfica.
 
   ![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
 
@@ -235,7 +235,7 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
  
 
  
- ### Grafica con amplitud 1.0
+ ### Gráfica con amplitud 1.0
  ![Image](https://github.com/user-attachments/assets/305958ed-063a-4f8f-a052-e8623cc0cc4a)
 
 
@@ -243,7 +243,7 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 1.0 es de -8.93 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 8,93 db a  la señal original.
 
 
-### Grafica con amplitud 3.0
+### Gráfica con amplitud 3.0
 ![Image](https://github.com/user-attachments/assets/1b35a5ac-269d-4410-ad35-41ac0e480123)
 
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 3.0 es de -18.81 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 18.81 dB a  la señal original.
@@ -279,12 +279,12 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
 ```
 - Obteniendo como resultado las siguientes graficas con amplitudes y SNR diferentes.
 
-### Grafica con amplitud 2.0
+### Gráfica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/e7c57435-8f4d-42b0-8a0a-639a282c861c)
 
 - El valor del SNR para la señal ECG con ruido Artefacto de amplitud 2.0 es de -12.11 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 12.11 dB a  la señal original.
 
-### Grafica con amplitud 0.5
+### Gráfica con amplitud 0.5
 ![Image](https://github.com/user-attachments/assets/69c11500-f773-466b-a903-fe90b1644e09)
 
 - El valor del SNR para la señal ECG con ruido Artefacto de amplitud 0.5 es de -0.07 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 0.07 dB a  la señal original.
@@ -328,11 +328,11 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
  
 - A continuación, se muestran las graficas obtenidas de la señal contaminada con ruido de pulso:
 
-### Grafica con amplitud 0.9
+### Gráfica con amplitud 0.9
 ![Image](https://github.com/user-attachments/assets/506d4074-8faf-41d9-97a5-a5d21135335b)
 
 - El valor del SNR para la señal ECG con ruido Pulso de amplitud 0.9 es de 14.82 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 14.82 dB a la señal original.
-### Grafica con amplitud 2.0
+### Gráfica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/1c3936aa-04d7-446b-b128-58de95c2da1c)
 
 - El valor del SNR para la señal ECG con ruido Pulso de amplitud 2.0 es de 7.89 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 7.89 dB a la señal original.
