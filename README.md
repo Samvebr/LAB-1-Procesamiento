@@ -165,3 +165,13 @@ Se define la función “agregar_ruido_artefacto”, posteriormente se generan l
 1.Se genera un vector de tiempo “t” con “muestras_max” puntos, desde 0 hasta 10 segundos y se divide en un intervalo de 0 a 10, tomando valores equidistantes.
 2. Se define la frecuencia del ruido y se genera la variable “ruido”, generando un coseno desplazado
 3. Se agrega el ruido a las señal en el canal correspondiente 
+
+```bash
+def agregar_ruido_artefacto(senal, muestra_max, amplitud= 1.0):
+   t = np.linspace (0,10, muestra_max)
+   f0= 5
+   ruido=amplitud * np.cos(2*np.pi*f0*t - np.pi/2)
+   for canal in range(senal.shape[1]):
+       senal[:muestra_max, canal] += ruido
+   return senal
+```
