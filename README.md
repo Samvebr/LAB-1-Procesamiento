@@ -159,6 +159,49 @@ return texto
 ``` 
 ## Gaussiano:
 
+Se define la función "agregar_ruido_gaussiano", posteriormente se generan los siguientes pasos:
+
+1.	Se recorre cada canal de la señal utilizando un ciclo for, accediendo a cada columna de la matriz senal.
+2.	Se genera un vector de ruido ruido1 con distribución gaussiana de media 0 y desviación estándar amplitud_ruidoo, con un tamaño de muestras_max.
+3.	Se agrega el ruido gaussiano a las primeras muestras_max posiciones de la señal en el canal correspondiente.
+4.	La función devuelve la señal modificada con el ruido agregado.
+
+
+```bash
+
+def agregar_ruido_gaussiano(senal,muestras_max,amplitud_ruidoo=0.1):
+    for canal in range(senal.shape[1]):
+        ruido1=np.random.normal(0,amplitud_ruidoo, muestras_max)#media, desviacion estandar, el cero indica el canal de
+        senal[:muestras_max, canal] += ruido1
+        return senal
+```
+ 
+- El código agrega ruido gaussiano a una señal ECG con diferentes amplitudes (0.5 y 2.0), calcula la relación señal-ruido (SNR) y la muestra en pantalla. Finalmente, grafica la señal resultante con el ruido añadido para evaluar su impacto visualmente.
+
+ ```bash
+print("\n--- Ruido Gaussiano ---")
+for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
+    senal_gaussiano = senal.copy()  # Copia de la señal original
+    senal_gaussiano = agregar_ruido_gaussiano(senal_gaussiano, muestras_max, amplitud_ruidoo=amplitud)
+    snr_valores = calcular_SNR(senal, senal_gaussiano, muestras_max)
+    texto_SNR = generar_texto_SNR(snr_valores, canales)
+    print(f"SNR para Ruido Gaussiano (amplitud={amplitud}):")
+    print(texto_SNR)
+    graficar_senal(tiempo, senal_gaussiano, canales, tiempo_max,
+    f"Señal ECG con Ruido Gaussiano (Amplitud={amplitud}) - Primeros 10 Segundos", texto_SNR)
+```
+ 
+
+ 
+ # Grafica con amplitud 0.5
+![image](https://github.com/user-attachments/assets/e49eb09d-5c77-4795-873b-04f4b1644f86)
+
+- El valor del SNR para la señal ECG con ruido Gausiano de amplitud 1.0 es de -8.93 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 8,93 db a  la señal original.
+
+
+# Grafica con amplitud 3.0
+![image](https://github.com/user-attachments/assets/b8906e02-f51f-402c-b252-1afe77891363)
+
 ## Artefacto:
 Se define la función “agregar_ruido_artefacto”, posteriormente se generan los siguientes pasos:
 
@@ -175,3 +218,6 @@ def agregar_ruido_artefacto(senal, muestra_max, amplitud= 1.0):
        senal[:muestra_max, canal] += ruido
    return senal
 ```
+- Posteriormente se llama la función anteriormente definida para ser graficada, tanto para una amplitud de 0,5 como para una amplitud de 2.0, modificando el parámetro de amplitud de la función, con la instrucción print se muestra en pantalla el valor del cálculo del SNR.
+
+  ```bash
