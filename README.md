@@ -118,8 +118,8 @@ datos = senal[:muestras_max, canal]
 media = np.mean(datos)
 desviacion = np.std(datos)
 coeff_var= (desviacion/media) * 100
-texto += f"Canal {canal+1}:\nMedia = {media::2f} mV\nDesv = {desviacion:.2f} mV
-return texto
+texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\nCoeffVar = {coeff_var:.2f}%\n\n"
+    return texto
 ```
 ## Grafica.
 
@@ -144,6 +144,8 @@ Para la grafica del histograma y la densidad de probabilidad de la señal, se de
 - Plt.plot: Grafica la curva en rojo.
   
    ![Image](https://github.com/user-attachments/assets/e25fe8a4-9470-459b-aeba-8d4a6164577b)
+
+- Como se puede observar en el histograma el tipo de probabilidad estadística en el que se comporta es sesgada positiva.
 
 ## Ruidos y calculo SNR.
 
@@ -281,3 +283,25 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
     
 - Se eligen posiciones aleatorias dentro de las muestras_max y np.random.choice selecciona índices únicos sin repetición y
   con valores se crean picos de amplitud positiva y negativa.
+
+```bash
+print("\n--- Ruido de Pulso ---")
+for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
+    senal_pulso = senal.copy()  # Copia de la señal original
+    senal_pulso = agregar_ruido_pulso(senal_pulso, muestras_max, amplitud_ruido=amplitud)
+    snr_valores = calcular_SNR(senal, senal_pulso, muestras_max)
+    texto_SNR = generar_texto_SNR(snr_valores, canales)
+    print(f"SNR para Ruido de Pulso (amplitud={amplitud}):")
+    print(texto_SNR)
+    graficar_senal(tiempo, senal_pulso, canales, tiempo_max, f"Señal ECG con Ruido de Pulso (Amplitud={amplitud}) - Primeros 10 Segundos",
+    texto_SNR)
+```
+- Para graficar el ruido de pulso se introduce el ruido aleatorio con una amplitud de 0,9 y otro de 2,0, para cada nivel de ruido:
+  
+  1. Se copia la señal original.
+  2.Se agrega el ruido de pulso dependiendo de la amplitud.
+  3. Se calcula el SNR entre la señal original y la ruidosa.
+  4. Se genera el texto con los valores que se muestran en pantalla.
+  5. Se grafica la señal modificada.
+ 
+- A continuación, se muestran las graficas obtenidas de la señal contaminada con ruido de pulso:
