@@ -3,7 +3,7 @@
 - Señal principal: Electrocardiograma (ECG) de un paciente, registrada para estudiar apnea obstructiva del sueño.
 - Objetivo: Analizar cómo los eventos de apnea (interrupciones en la respiración durante el sueño) se correlacionan con cambios en la actividad cardíaca (ej.: variabilidad de la frecuencia cardíaca, alteraciones en el ECG).
 
-### METODO DE ADQUISICION 
+### METODO DE ADQUISICIÓN 
 - Pacientes: Las señales provienen de pacientes que fueron monitoreados durante el sueño para estudiar la apnea obstructiva del sueño.
 
 - Duración: Cada registro tiene una duración de 7 a 10 horas, lo que permite capturar múltiples eventos de apnea y su impacto en el ECG.
@@ -22,7 +22,7 @@
 
 - SpO2: Saturación de oxígeno en sangre, medida con un pulsioxímetro.
 
-## Grafica de la señal y datos estadisticos.
+## Gráfica de la señal y datos estadisticos.
 
 - En la base de datos de Physionet se escogió la señal “a04.dat” y “a04.hea” del estudio Apnea-ECG Database, para que el código pueda leer correctamente los archivos es necesario que se encuentren dentro de la misma carpeta del proyecto.
 
@@ -67,7 +67,7 @@ df.insert(0, "Time (s)", tiempo)
 return senal, fs, canales, tiempo, df
 
 ```
-- Después se grafico los primeros 10 segundos de la señal empleando la función graficar señal, además se muestra en la gráfica los datos estadísticos de la señal, los cuales se obtienen a partir de la función calcular_estadisticas_texto que tiene como parámetros la señal y los primero 10 segundos y muestra en consola los datos estadísticos de la señal (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad).
+- Después se gráfico los primeros 10 segundos de la señal empleando la función graficar señal, además se muestra en la gráfica los datos estadísticos de la señal, los cuales se obtienen a partir de la función calcular_estadisticas_texto que tiene como parámetros la señal y los primero 10 segundos y muestra en consola los datos estadísticos de la señal (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad).
 
 ```bash
 texto_estadisticas = calcular_estadisticas_texto(senal, muestras_max)
@@ -76,7 +76,7 @@ print( "Estadísticas de la señal original:")
 print (texto_estadisticas)
 ```
 
-- La función “graficar_senal” tiene como parámetros tiempo, senal, canales, tiempo_max, titulo, “texto_anotacion=None”, se establecen los parámetros y el tamaño de la muestra de la señal que se quiere graficar, luego se escoge el tamaño de la gráfica, el nombre de los ejes, el titulo del gráfico, la cuadrilla y se escribe la instrucción plt.show() para que se muestre el grafico.
+- La función “graficar_senal” tiene como parámetros tiempo, senal, canales, tiempo_max, titulo, “texto_anotacion=None”, se establecen los parámetros y el tamaño de la muestra de la señal que se quiere gráficar, luego se escoge el tamaño de la gráfica, el nombre de los ejes, el titulo del gráfico, la cuadrilla y se escribe la instrucción plt.show() para que se muestre el grafico.
 
 ```bash
 def graficar_senal(tiempo,senal,canales,tiempo_max,titulo, texto_anotacion=None):
@@ -157,7 +157,7 @@ def calcular_coeficiente_desviacion(senal, muestras_max):
             coeficientes[canal] = None  # Evita divisiones por cero
     return coeficientes
 ```
-## Grafica.
+## Gráfica.
 
   ![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
 
@@ -168,7 +168,7 @@ Estadisticas del ECG:
 
 ## Histograma.
  
-Para la grafica del histograma y la densidad de probabilidad de la señal, se definió la función “calcular_estadisticas_y_histograma” que contiene los parámetros de senal,     canales y muestras_max, los otros comandos utilizados son:
+Para la gráfica del histograma y la densidad de probabilidad de la señal, se definió la función “calcular_estadisticas_y_histograma” que contiene los parámetros de senal,     canales y muestras_max, los otros comandos utilizados son:
 
 - Plt.hist: genera un histograma de la amplitud de la señal. 
 - Bins: divide el rango en los valores deseados.
@@ -185,7 +185,7 @@ Para la grafica del histograma y la densidad de probabilidad de la señal, se de
 
 ## Ruidos y calculo SNR.
 
-- La señal de ruido Se refiere a la proporción entre la potencia de una señal (información relevante) y la potencia del ruido de fondo (información irrelevante). Para la practica por cada se señal se calcularon dos amplitudes distintas.
+- La señal de ruido se refiere a la proporción entre la potencia de una señal (información relevante) y la potencia del ruido de fondo (información irrelevante). Para la practica por cada se señal se calcularon dos amplitudes distintas.
   
 - Para todos se calcula el SNR mediante la función “calcular_SNR” el primer parámetro defino en la función es la matriz con la señal original sin ruido, el segundo parámetro es la matriz con la señal con ruido agregado y el tercer parámetro es el número máximo de muestras a analizar.
 
@@ -252,7 +252,7 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
  
 
  
- ### Grafica con amplitud 1.0
+ ### Gráfica con amplitud 1.0
  ![Image](https://github.com/user-attachments/assets/305958ed-063a-4f8f-a052-e8623cc0cc4a)
 
 
@@ -260,7 +260,7 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 1.0 es de -8.93 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 8,93 db a  la señal original.
 
 
-### Grafica con amplitud 3.0
+### Gráfica con amplitud 3.0
 ![Image](https://github.com/user-attachments/assets/1b35a5ac-269d-4410-ad35-41ac0e480123)
 
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 3.0 es de -18.81 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 18.81 dB a  la señal original.
@@ -296,12 +296,12 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
 ```
 - Obteniendo como resultado las siguientes graficas con amplitudes y SNR diferentes.
 
-### Grafica con amplitud 2.0
+### Gráfica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/e7c57435-8f4d-42b0-8a0a-639a282c861c)
 
 - El valor del SNR para la señal ECG con ruido Artefacto de amplitud 2.0 es de -12.11 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 12.11 dB a  la señal original.
 
-### Grafica con amplitud 0.5
+### Gráfica con amplitud 0.5
 ![Image](https://github.com/user-attachments/assets/69c11500-f773-466b-a903-fe90b1644e09)
 
 - El valor del SNR para la señal ECG con ruido Artefacto de amplitud 0.5 es de -0.07 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 0.07 dB a  la señal original.
@@ -345,11 +345,11 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
  
 - A continuación, se muestran las graficas obtenidas de la señal contaminada con ruido de pulso:
 
-### Grafica con amplitud 0.9
+### Gráfica con amplitud 0.9
 ![Image](https://github.com/user-attachments/assets/506d4074-8faf-41d9-97a5-a5d21135335b)
 
 - El valor del SNR para la señal ECG con ruido Pulso de amplitud 0.9 es de 14.82 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 14.82 dB a la señal original.
-### Grafica con amplitud 2.0
+### Gráfica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/1c3936aa-04d7-446b-b128-58de95c2da1c)
 
 - El valor del SNR para la señal ECG con ruido Pulso de amplitud 2.0 es de 7.89 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 7.89 dB a la señal original.
