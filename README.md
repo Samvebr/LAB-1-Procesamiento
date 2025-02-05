@@ -299,7 +299,7 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
     graficar_senal(tiempo, senal_pulso, canales, tiempo_max, f"Señal ECG con Ruido de Pulso (Amplitud={amplitud}) - Primeros 10 Segundos",
     texto_SNR)
 ```
-- Para graficar el ruido de pulso se introduce el ruido aleatorio con una amplitud de 0,9 y otro de 2,0, para cada nivel de ruido:
+- Para graficar el ruido de pulso se introduce el ruido aleatorio con una amplitud de 0,9 y otro de 2,0 para cada nivel de ruido:
   
   1. Se copia la señal original.
   2. Se agrega el ruido de pulso dependiendo de la amplitud.
