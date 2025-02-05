@@ -102,7 +102,7 @@ return texto
 ```
 ##Grafica.
 
-![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
+  ![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
 
 Estadisticas del ECG:
 - Media: 0.0061 mV
@@ -121,3 +121,47 @@ Para la grafica del histograma y la densidad de probabilidad de la señal, se de
 - Bordes: lista con los bordes de cada bin del histograma. 
 - norm.pdf(bordes, media, desv_std): calcula la función de densidad de probabilidad normal (Pdf) con la media de deviación estándar de la señal.
 - Plt.plot: Grafica la curva en rojo.
+  
+   ![Image](https://github.com/user-attachments/assets/e25fe8a4-9470-459b-aeba-8d4a6164577b)
+
+## Ruidos y calculo SNR.
+
+- La señal de ruido Se refiere a la proporción entre la potencia de una señal (información relevante) y la potencia del ruido de fondo (información irrelevante). Para la practica por cada se señal se calcularon dos amplitudes distintas.
+  
+- Para todos se calcula el SNR mediante la función “calcular_SNR” el primer parámetro defino en la función es la matriz con la señal original sin ruido, el segundo parámetro es la matriz con la señal con ruido agregado y el tercer parámetro es el número máximo de muestras a analizar.
+
+```bash
+def calcular_SNR(senal_original, senal_ruidosa, muestra_max):
+lista_snr= []
+for canal in range(senal_original.shape[1]):
+orig = senal_original [:muestras_max, canal]
+ruidosa = senal_ruidosa [:muestras_max, canal]
+componente_ruido= ruidosa - orig
+rms_senal = np.sqrt(np.mean(orig**2))
+rms_ruido = np.sqrt(np.mean(componente_ruido**2))
+snr:db = 20 * np.log10(rms_senal / rms_ruido)
+lista_snr.append(snr_db)
+ return lista_snr
+```
+
+- Se crea una lista una lista para almacenar el SNR calculado para cada canal, luego “senal_original.shape[1]” obtiene el número de canales y analiza cada canal por separado, “orig” se extraen los primeros valores de la señal original y “ruidosa” se extraen los valores de la señal con ruido. Se calcula el ruido tomando la señal ruidosa menos la original, y posteriormente el RMS que es un valor necesario para calcular el SNR. El SNR, calcula la relación señal ruido en decibeles usando la formula:
+
+
+- Se almacena el dato obtenido y retorna el valor almacenado para posteriormente mostrarlo en pantalla con la función “generar_texto_SNR(lista_snr, canales)”
+
+```bash
+def generar_texto_SNR(lista_snr, canales):
+
+texto= ""
+for idx, canal in enumerate(canales):
+    texto += f"{canal}:\nSNR = {lista_snr[idx]:.2f} dB\n\n"
+return texto
+``` 
+## Gaussiano:
+
+## Artefacto:
+Se define la función “agregar_ruido_artefacto”, posteriormente se generan los siguientes pasos:
+
+1.Se genera un vector de tiempo “t” con “muestras_max” puntos, desde 0 hasta 10 segundos y se divide en un intervalo de 0 a 10, tomando valores equidistantes.
+2. Se define la frecuencia del ruido y se genera la variable “ruido”, generando un coseno desplazado
+3. Se agrega el ruido a las señal en el canal correspondiente 
