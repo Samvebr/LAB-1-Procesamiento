@@ -1,5 +1,26 @@
 # LAB-1-Procesamiento
-El análisis de señales biomédicas permite extraer información relevante mediante herramientas estadísticas. Estas señales contienen datos útiles, como amplitud y frecuencia, pero también ruido. En este laboratorio, se emplearán señales fisiológicas extraídas de la base de datos de Physionet, y empleando el compilador Python se calcularán sus estadísticos descriptivos (media, desviación estándar, coeficiente de variación, histograma y función de probabilidad) utilizando funciones predefinidas y programando desde cero. Además, se analizará la relación señal-ruido (SNR) al contaminarlas con distintos tipos de ruido (gaussiano, ruido de impulso y ruido de artefacto).
+### TIPO DE SEÑAL Y PROPOSITO 
+- Señal principal: Electrocardiograma (ECG) de un paciente, registrada para estudiar apnea obstructiva del sueño.
+- Objetivo: Analizar cómo los eventos de apnea (interrupciones en la respiración durante el sueño) se correlacionan con cambios en la actividad cardíaca (ej.: variabilidad de la frecuencia cardíaca, alteraciones en el ECG).
+
+### METODO DE ADQUISICION 
+- Pacientes: Las señales provienen de pacientes que fueron monitoreados durante el sueño para estudiar la apnea obstructiva del sueño.
+
+- Duración: Cada registro tiene una duración de 7 a 10 horas, lo que permite capturar múltiples eventos de apnea y su impacto en el ECG.
+
+### Señales adquiridas:
+
+- ECG: Electrocardiograma continuo, registrado a 100 Hz con una resolución de 16 bits.
+
+- Señales respiratorias (en 8 registros, incluido a04):
+
+- Resp C: Esfuerzo respiratorio torácico, medido con plethysmografía por inductancia.
+
+- Resp A: Esfuerzo respiratorio abdominal, medido con plethysmografía por inductancia.
+
+- Resp N: Flujo oronasal, medido con termistores nasales.
+
+- SpO2: Saturación de oxígeno en sangre, medida con un pulsioxímetro.
 
 ## Grafica de la señal y datos estadisticos.
 
@@ -193,13 +214,17 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
  
 
  
- ### Grafica con amplitud 0.5
+ ### Grafica con amplitud 1.0
+ ![Image](https://github.com/user-attachments/assets/305958ed-063a-4f8f-a052-e8623cc0cc4a)
+
 
 
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 1.0 es de -8.93 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 8,93 db a  la señal original.
 
 
 ### Grafica con amplitud 3.0
+![Image](https://github.com/user-attachments/assets/1b35a5ac-269d-4410-ad35-41ac0e480123)
+
 
 
 ## Artefacto:
