@@ -184,7 +184,7 @@ Para la grafica del histograma y la densidad de probabilidad de la señal, se de
 
 ## Ruidos y calculo SNR.
 
-- La señal de ruido Se refiere a la proporción entre la potencia de una señal (información relevante) y la potencia del ruido de fondo (información irrelevante). Para la practica por cada se señal se calcularon dos amplitudes distintas.
+- La señal de ruido se refiere a la proporción entre la potencia de una señal (información relevante) y la potencia del ruido de fondo (información irrelevante). Para la practica por cada se señal se calcularon dos amplitudes distintas.
   
 - Para todos se calcula el SNR mediante la función “calcular_SNR” el primer parámetro defino en la función es la matriz con la señal original sin ruido, el segundo parámetro es la matriz con la señal con ruido agregado y el tercer parámetro es el número máximo de muestras a analizar.
 
