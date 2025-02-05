@@ -264,3 +264,20 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
 ### Grafica con amplitud 5.0
 ![Image](https://github.com/user-attachments/assets/69c11500-f773-466b-a903-fe90b1644e09)
 
+## Pulso:
+
+- La función “agregar_ruido_pulso” contiene los parámetros de “senal”, “muestras_max” y “amplitud_ruido” que contiene la magnitud de los pulsos.
+
+  ```bash
+  def agregar_ruido_impulso(senal, muestras_max, amplitud_ruido=0.9):
+      num_pulsos = int(0.005 * muestras_max)
+      for canal in range (senal.shape[1]):
+          posiciones = np.random.choice(muestras_max, num_pulsos, replace=False)
+          valores = np.random.choice([-amplitud_ruido, amplitud_ruido], num_pulsos)
+          senal[posiciones, canal] += valores
+      return senal
+  ```
+- “num_pulsos = int(0.005 * muestras_max)” limita la cantidad de picos en la señal.
+    
+- Se eligen posiciones aleatorias dentro de las muestras_max y np.random.choice selecciona índices únicos sin repetición y
+  con valores se crean picos de amplitud positiva y negativa.
