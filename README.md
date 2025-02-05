@@ -3,7 +3,7 @@
 - Señal principal: Electrocardiograma (ECG) de un paciente, registrada para estudiar apnea obstructiva del sueño.
 - Objetivo: Analizar cómo los eventos de apnea (interrupciones en la respiración durante el sueño) se correlacionan con cambios en la actividad cardíaca (ej.: variabilidad de la frecuencia cardíaca, alteraciones en el ECG).
 
-### METODO DE ADQUISICION 
+### METODO DE ADQUISICIÓN 
 - Pacientes: Las señales provienen de pacientes que fueron monitoreados durante el sueño para estudiar la apnea obstructiva del sueño.
 
 - Duración: Cada registro tiene una duración de 7 a 10 horas, lo que permite capturar múltiples eventos de apnea y su impacto en el ECG.
@@ -22,7 +22,7 @@
 
 - SpO2: Saturación de oxígeno en sangre, medida con un pulsioxímetro.
 
-## Grafica de la señal y datos estadisticos.
+## Gráfica de la señal y datos estadisticos.
 
 - En la base de datos de Physionet se escogió la señal “a04.dat” y “a04.hea” del estudio Apnea-ECG Database, para que el código pueda leer correctamente los archivos es necesario que se encuentren dentro de la misma carpeta del proyecto.
 
