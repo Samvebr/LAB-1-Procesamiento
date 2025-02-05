@@ -227,7 +227,7 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
 ### Grafica con amplitud 3.0
 ![Image](https://github.com/user-attachments/assets/1b35a5ac-269d-4410-ad35-41ac0e480123)
 
-
+- El valor del SNR para la señal ECG con ruido Gausiano de amplitud 3.0 es de -18.81 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 18.81 dB a  la señal original.
 
 ## Artefacto:
 Se define la función “agregar_ruido_artefacto”, posteriormente se generan los siguientes pasos:
@@ -263,9 +263,12 @@ graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Rui
 ### Grafica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/e7c57435-8f4d-42b0-8a0a-639a282c861c)
 
-### Grafica con amplitud 5.0
+- El valor del SNR para la señal ECG con ruido Artefacto de amplitud 2.0 es de -12.11 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 12.11 dB a  la señal original.
+
+### Grafica con amplitud 0.5
 ![Image](https://github.com/user-attachments/assets/69c11500-f773-466b-a903-fe90b1644e09)
 
+- El valor del SNR para la señal ECG con ruido Artefacto de amplitud 0.5 es de -0.07 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 0.07 dB a  la señal original.
 ## Pulso:
 
 - La función “agregar_ruido_pulso” contiene los parámetros de “senal”, “muestras_max” y “amplitud_ruido” que contiene la magnitud de los pulsos.
@@ -309,5 +312,8 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
 ### Grafica con amplitud 0.9
 ![Image](https://github.com/user-attachments/assets/506d4074-8faf-41d9-97a5-a5d21135335b)
 
+- El valor del SNR para la señal ECG con ruido Pulso de amplitud 0.9 es de 14.82 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 14.82 dB a la señal original.
 ### Grafica con amplitud 2.0
 ![Image](https://github.com/user-attachments/assets/1c3936aa-04d7-446b-b128-58de95c2da1c)
+
+- El valor del SNR para la señal ECG con ruido Pulso de amplitud 2.0 es de 7.89 dB, al ser un valor positivo el SNR significa que la señal de ruido es menor 7.89 dB a la señal original.
