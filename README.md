@@ -124,38 +124,21 @@ texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\
 ## Calculos estadísticos (Manual)
 
 ```bash
-def calcular_media(senal, muestras_max):
+def calcular_estadisticas(senal, muestras_max):
 
-    medias = {}
-    for i, canal in enumerate(canales):
-        datos = [senal[j][i] for j in range(muestras_max)]  # Lista de valores del canal
-        suma = sum(datos)
-        media = suma / len(datos)  # Promedio
-        medias[canal] = media
-    return medias
-
-def calcular_desviacion_estandar(senal, muestras_max):
-    desviaciones = {}
-    medias = calcular_media(senal, muestras_max)
-    
+    resultados = {}
     for i, canal in enumerate(canales):
         datos = [senal[j][i] for j in range(muestras_max)]
-        suma_cuadrados = sum((x - medias[canal])**2 for x in datos)
-        desviacion = (suma_cuadrados / len(datos)) ** 0.5  # Raíz cuadrada
-        desviaciones[canal] = desviacion
-    return desviaciones
+        media = sum(datos) / len(datos)
+        desviacion = (sum((x - media) ** 2 for x in datos) / len(datos)) ** 0.5
+        coef_var = (desviacion / media) * 100 if media != 0 else None
+        resultados[canal] = {"Media": media, "Desviación": desviacion, "Coef. Variación": coef_var}
+    return resultados
 
-def calcular_coeficiente_desviacion(senal, muestras_max):
-    coeficientes = {}
-    medias = calcular_media(senal, muestras_max)
-    desviaciones = calcular_desviacion_estandar(senal, muestras_max)
-    
-    for canal in canales:
-        if medias[canal] != 0:
-            coeficientes[canal] = (desviaciones[canal] / medias[canal]) * 100
-        else:
-            coeficientes[canal] = None  # Evita divisiones por cero
-    return coeficientes
+estadisticas = calcular_estadisticas(senal, muestras_max)
+for canal, valores in estadisticas.items():
+    print(f"{canal}: Media={valores['Media']:.4f} mV, Desv.={valores['Desviación']:.4f} mV, Coef. Var.={valores['Coef. Variación']:.2f}%")
+
 ```
 ## Grafica.
 
