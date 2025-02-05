@@ -4,82 +4,227 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-# Ruta del archivo (IMPORTANTE:los archivos .dat y .hea estén en la misma carpeta, si no esta vaina no funciona)
-record_name = 'a04'  # Sin colocar el .dat o .hea asi el nombre solito :,)
+# -----------------------------
+# FUNCIONES PA QUE SEA ORGANIZADO :)
+# -----------------------------
 
-# Leer los datos de la señal y encabezado
-record = wfdb.rdrecord(record_name)  # Lee los archivos .dat y .hea
-signal = record.p_signal  # Obtiene la señal en formato de matriz
-fs = record.fs  # Frecuencia de muestreo
-canales = record.sig_name  # Nombres de los canales (derivaciones)
-duracion = len(signal) / fs  # Duración de la señal en segundos
-
-# Mostrar información del archivo
-print(f"Frecuencia de muestreo: {fs} Hz")
-print(f"Duración de la señal: {duracion:.2f} segundos")
-print(f"Canales disponibles: {canales}")
-
-# Crear un DataFrame con la señal
-time = [i / fs for i in range(len(signal))]  # Eje de tiempo en segundos
-df = pd.DataFrame(signal, columns=canales)  # Columnas con los nombres de los canales
-df.insert(0, "Time (s)", time)  # Añadir la columna de tiempo
-
-# Limitar los datos a los primeros 10 segundos
-max_time = 20  # Duración en segundos que queremos graficar
-max_samples = int(fs * max_time)  # Número de muestras correspondientes a 10 segundos
-limited_time = time[:max_samples]
-limited_signal = signal[:max_samples, :]
-
-# Graficar la señal ECG de los primeros 10 segundos
-plt.figure(figsize=(12, 6))
-for i, canal in enumerate(canales):
-    plt.plot(limited_time, limited_signal[:, i], label=canal)
-plt.title("Señal ECG - Primeros 10 Segundos")
-plt.xlabel("Tiempo (s)")
-plt.ylabel("Amplitud (mV)")
-plt.legend()
-plt.grid()
-plt.tight_layout()
-plt.show()
-
-# Calcular estadísticas y graficar histograma con densidad de probabilidad para cada canal
-for i, canal in enumerate(canales):
-    channel_data = limited_signal[:, i]  # Extraer los datos del canal actual
-
-    # Calcular estadísticas
-    mean = np.mean(channel_data)  # Media
-    std_dev = np.std(channel_data)  # Desviación estándar
-    coeff_var = (std_dev / mean) * 100  # Coeficiente de variación en porcentaje
-
-    # Mostrar estadísticas
-    print(f"\nEstadísticas para {canal} usando funciones:")
-    print(f"- Media: {mean:.4f} mV")
-    print(f"- Desviación estándar: {std_dev:.4f} mV")
-    print(f"- Coeficiente de variación: {coeff_var:.2f} %")
-
-    # Graficar histograma y densidad de probabilidad
-    plt.figure(figsize=(10, 6))
-    count, bins, _ = plt.hist(
-        channel_data,
-        bins=30,
-        density=False,  # Altura relativa al número de datos (frecuencia)
-        alpha=0.6,
-        color="b",
-        label="Histograma",
-    )
-
-    # Escalar la densidad de probabilidad para que coincida con el histograma
-    bin_width = bins[1] - bins[0]  # Ancho de los bins del histograma
-    pdf = norm.pdf(bins, mean, std_dev)  # Función de densidad de probabilidad
-    scaled_pdf = pdf * len(channel_data) * bin_width  # Escalar al histograma
-
-    plt.plot(bins, scaled_pdf, "r-", label="Densidad de probabilidad")
-    plt.title(f"Histograma y Densidad de Probabilidad - {canal}")
-    plt.xlabel("Amplitud (mV)")
-    plt.ylabel("Frecuencia")
-    plt.legend()
-    plt.grid()
+def leer_senal(nombre_registro):
+    """
+    Lee la señal ECG y su encabezado (por ejemplo, a04.dat y a04.hea) usando WFDB.
+    Retorna:
+      senal: matriz con la señal (cada columna es un canal)
+      fs: frecuencia de muestreo en Hz
+      canales: lista con los nombres de los canales
+      tiempo: eje de tiempo (lista en segundos)
+      df: DataFrame con la señal y la columna de tiempo
+    """
+    registro = wfdb.rdrecord(nombre_registro)  # Lee los archivos .dat y .hea
+    senal = registro.p_signal                # Obtiene la señal (matriz)
+    fs = registro.fs                          # Frecuencia de muestreo (Hz)
+    canales = registro.sig_name               # Nombres de los canales
+    duracion = len(senal) / fs                # Duración total en segundos
+    print(f"Frecuencia de muestreo: {fs} Hz")
+    print(f"Duración de la señal: {duracion:.2f} segundos")
+    print(f"Canales disponibles: {canales}")
+    
+    # Genera el eje de tiempo (cada muestra en segundos)
+    tiempo = [i / fs for i in range(len(senal))]
+    # Crea un DataFrame para organizar la señal
+    df = pd.DataFrame(senal, columns=canales)
+    df.insert(0, "Tiempo (s)", tiempo)
+    return senal, fs, canales, tiempo, df
+# Definimos una  funcion que grafique las señales que deseamos ver, inlcuyendo las de ruido :b 
+def graficar_senal(tiempo, senal, canales, tiempo_max, titulo, texto_anotacion=None):
+    """
+    Grafica la señal para los primeros 'tiempo_max' segundos y, opcionalmente,
+    muestra en la figura un recuadro con anotaciones (por ejemplo, estadísticas o SNR).
+    """
+    muestras_max = int(fs * tiempo_max)  # Número de muestras para 'tiempo_max' segundos
+    tiempo_limitado = tiempo[:muestras_max]
+    senal_limitada = senal[:muestras_max, :]
+    fig, ax = plt.subplots(figsize=(12, 6))
+    for i, canal in enumerate(canales):
+        ax.plot(tiempo_limitado, senal_limitada[:, i], label=canal)
+    ax.set_title(titulo)
+    ax.set_xlabel("Tiempo (s)")
+    ax.set_ylabel("Amplitud (mV)")
+    ax.legend()
+    ax.grid()
+    if texto_anotacion is not None:
+        # Se coloca el texto de anotación en la esquina superior izquierda
+        ax.text(0.02, 0.98, texto_anotacion, transform=ax.transAxes, fontsize=10,
+                verticalalignment='top', bbox=dict(facecolor='white', alpha=0.7))
     plt.tight_layout()
     plt.show()
+    
+# Definimos una funcion que agregue ruido tipo artefacto que agregaremos a la señal original :)
+def agregar_ruido_artefacto(senal, muestras_max, amplitud=1.0):
+    """
+    Agrega ruido de artefacto (ruido cosenoidal) a los primeros 'muestras_max' puntos.
+    'amplitud' es el factor de escala del ruido.
+    """
+    t = np.linspace(0, 10, muestras_max)  # Eje de tiempo para 10 segundos
+    f0 = 5  # Frecuencia del ruido en Hz
+    ruido = amplitud * np.cos(2 * np.pi * f0 * t - np.pi / 2)
+    for canal in range(senal.shape[1]):
+        senal[:muestras_max, canal] += ruido
+    return senal
+# Definimos una funcion que agregue ruido tipo Gaussiano que agregaremos a la señal original :)
+""" 
+Agregamos ruido gaussiono a los primeros 10 segundos de las muestras de la señal,
+amplitud de ruido controla la desviavin estandar del ruido gaussiano
+"""
+def agregar_ruido_gaussiano(senal,muestras_max,amplitud_ruidoo=0.1):
+    for canal in range(senal.shape[1]):
+        ruido1=np.random.normal(0,amplitud_ruidoo, muestras_max)#media, desviacion estandar, el cero indica el canal de
+        senal[:muestras_max, canal] += ruido1
+        return senal
+   
+# Definimos una funcion que agregue ruido tipo Pulso que agregaremos a la señal original :)
 
-# Mostrar estadisticas con formulas desde cero 
+def agregar_ruido_pulso(senal, muestras_max, amplitud_ruido=0.9):
+    """
+    Agrega ruido de pulso (picos aleatorios) a los primeros 'muestras_max' puntos.
+    'amplitud_ruido' es la magnitud del pulso.
+    """
+    #El numero de pulsos los cambiamos de forma arbitraria :D
+    num_pulsos = int(0.005 * muestras_max)  # 0.5% de los puntos tendrán pulso
+    for canal in range(senal.shape[1]):
+        posiciones = np.random.choice(muestras_max, num_pulsos, replace=False)
+        valores = np.random.choice([-amplitud_ruido, amplitud_ruido], num_pulsos)
+        senal[posiciones, canal] += valores
+    return senal
+
+def calcular_SNR(senal_original, senal_ruidosa, muestras_max):
+    """
+    Calcula el SNR (en dB) para cada canal comparando la señal original y la señal con ruido,
+    usando los primeros 'muestras_max' puntos.
+    SNR (dB) = 20 * log10(RMS(senal) / RMS(ruido)), donde ruido = senal_ruidosa - senal_original.
+    Retorna una lista con el SNR para cada canal.
+    """
+    lista_snr = []
+    for canal in range(senal_original.shape[1]):
+        orig = senal_original[:muestras_max, canal]
+        ruidosa = senal_ruidosa[:muestras_max, canal]
+        componente_ruido = ruidosa - orig
+        rms_senal = np.sqrt(np.mean(orig**2))
+        rms_ruido = np.sqrt(np.mean(componente_ruido**2))
+        snr_db = 20 * np.log10(rms_senal / rms_ruido)
+        lista_snr.append(snr_db)
+    return lista_snr
+
+def calcular_estadisticas_texto(senal, muestras_max):
+    """
+    Calcula la media, la desviación estándar y el coeficiente de variación para cada canal,
+    usando los primeros 'muestras_max' puntos, y retorna un string con esta información.
+    """
+    texto = ""
+    num_canales = senal.shape[1]
+    for canal in range(num_canales):
+        datos = senal[:muestras_max, canal]
+        media = np.mean(datos)
+        desviacion = np.std(datos)
+        coeff_var = (desviacion / media) * 100
+        texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\nCoeffVar = {coeff_var:.2f}%\n\n"
+    return texto
+
+def generar_texto_SNR(lista_snr, canales):
+    """
+    Genera un string con los valores de SNR (en dB) para cada canal.
+    """
+    texto = ""
+    for idx, canal in enumerate(canales):
+        texto += f"{canal}:\nSNR = {lista_snr[idx]:.2f} dB\n\n"
+    return texto
+
+# -----------------------------
+# CODIGO PRINCIAPL
+# -----------------------------
+nombre_registro = 'a04'
+tiempo_max = 10  # Analizar los primeros 10 segundos
+
+# Leer la señal original
+senal, fs, canales, tiempo, df = leer_senal(nombre_registro)
+muestras_max = int(fs * tiempo_max)
+
+# Graficar la señal original (primeros 10 segundos) con estadísticas
+texto_estadisticas = calcular_estadisticas_texto(senal, muestras_max)
+graficar_senal(tiempo, senal, canales, tiempo_max, "Señal ECG - Primeros 10 Segundos (Original)", texto_estadisticas)
+
+# Mostrar estadísticas en consola
+print("Estadísticas de la señal original:")
+print(texto_estadisticas)
+
+# (Opcional) Graficar histograma y densidad de probabilidad para la señal original
+def calcular_estadisticas_y_histograma(senal, canales, muestras_max):
+    for i, canal in enumerate(canales):
+        datos_canal = senal[:muestras_max, i]
+        media = np.mean(datos_canal)
+        desv_std = np.std(datos_canal)
+        coeff_var = (desv_std / media) * 100
+        print(f"\nEstadísticas para {canal}:")
+        print(f"- Media: {media:.4f} mV")
+        print(f"- Desviación estándar: {desv_std:.4f} mV")
+        print(f"- Coeficiente de variación: {coeff_var:.2f} %")
+        plt.figure(figsize=(10, 6))
+        conteo, bordes, _ = plt.hist(datos_canal, bins=120, density=False, 
+                                  alpha=0.6, color="b", label="Histograma", edgecolor="black")
+        ancho_bin = bordes[1] - bordes[0]
+        pdf = norm.pdf(bordes, media, desv_std)
+        pdf_escalada = pdf * len(datos_canal) * ancho_bin
+        plt.plot(bordes, pdf_escalada, "r-", label="Densidad de probabilidad")
+        plt.title(f"Histograma y Densidad de Probabilidad - {canal}")
+        plt.xlabel("Amplitud (mV)")
+        plt.ylabel("Frecuencia")
+        plt.legend()
+        plt.grid()
+        plt.tight_layout()
+        plt.show()
+
+# Graficar histograma para la señal original (opcional)
+calcular_estadisticas_y_histograma(senal, canales, muestras_max)
+# -----------------------------
+# AGREGAR RUIDO DE ARTEFACTO Y CALCULAR SNR (solo se muestran los valores de SNR)
+# -----------------------------
+print("\n--- Ruido de Artefacto ---")
+for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
+    senal_gaussiano = senal.copy()  # Copia de la señal original
+    senal_gaussiano = agregar_ruido_gaussiano(senal_gaussiano, muestras_max, amplitud_ruidoo=amplitud)
+    snr_valores = calcular_SNR(senal, senal_gaussiano, muestras_max)
+    texto_SNR = generar_texto_SNR(snr_valores, canales)
+    print(f"SNR para Ruido de Artefacto (amplitud={amplitud}):")
+    print(texto_SNR)
+    graficar_senal(tiempo, senal_gaussiano, canales, tiempo_max,
+                   f"Señal ECG con Ruido de Artefacto (Amplitud={amplitud}) - Primeros 10 Segundos",
+                   texto_SNR)
+
+
+# -----------------------------
+# AGREGAR RUIDO GAUSSIANO Y CALCULAR SNR (solo se muestran los valores de SNR)
+# -----------------------------
+print("\n--- Ruido Gaussiano ---")
+for amplitud in [0.5, 2.0]:  # 0.5: amplitud pequeña, 2.0: amplitud grande
+    senal_artefacto = senal.copy()  # Copia de la señal original
+    senal_artefacto = agregar_ruido_artefacto(senal_artefacto, muestras_max, amplitud=amplitud)
+    snr_valores = calcular_SNR(senal, senal_artefacto, muestras_max)
+    texto_SNR = generar_texto_SNR(snr_valores, canales)
+    print(f"SNR para Ruido Gaussiano (amplitud={amplitud}):")
+    print(texto_SNR)
+    graficar_senal(tiempo, senal_artefacto, canales, tiempo_max,
+                   f"Señal ECG con Ruido Gaussiano (Amplitud={amplitud}) - Primeros 10 Segundos",
+                   texto_SNR)
+
+# -----------------------------
+# AGREGAR RUIDO DE PULSO Y CALCULAR SNR (solo se muestran los valores de SNR)
+# -----------------------------
+print("\n--- Ruido de Pulso ---")
+for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
+    senal_pulso = senal.copy()  # Copia de la señal original
+    senal_pulso = agregar_ruido_pulso(senal_pulso, muestras_max, amplitud_ruido=amplitud)
+    snr_valores = calcular_SNR(senal, senal_pulso, muestras_max)
+    texto_SNR = generar_texto_SNR(snr_valores, canales)
+    print(f"SNR para Ruido de Pulso (amplitud={amplitud}):")
+    print(texto_SNR)
+    graficar_senal(tiempo, senal_pulso, canales, tiempo_max,
+                   f"Señal ECG con Ruido de Pulso (Amplitud={amplitud}) - Primeros 10 Segundos",
+                   texto_SNR)
