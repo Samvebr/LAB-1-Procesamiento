@@ -1,5 +1,5 @@
 # LAB-1- Análisis estadístico de la señal
-### TIPO DE SEÑAL Y PROPOSITO 
+### TIPO DE SEÑAL Y PROPÓSITO 
 - Señal principal: Electrocardiograma (ECG) de un paciente, registrada para estudiar apnea obstructiva del sueño.
 - Objetivo: Analizar cómo los eventos de apnea (interrupciones en la respiración durante el sueño) se correlacionan con cambios en la actividad cardíaca (ej.: variabilidad de la frecuencia cardíaca, alteraciones en el ECG).
 
