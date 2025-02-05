@@ -129,11 +129,6 @@ texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\
 • Si media ≠ 0, se calcula coeff_var = (desviacion / media) * 100; de lo contrario, es 0. Se retorna (media, desviacion, coeff_var).Si el promedio no es cero, se divide la desviación entre el promedio y se multiplica por 100. Finalmente, se devuelve el resultado.
 ```bash
 def calcular_estadisticas_manual(datos):
-    """
-    Calcula la media, la desviación estándar y el coeficiente de variación para un arreglo de datos,
-    usando ciclos 'for' y sin funciones como sum, np.mean o np.std.
-    Retorna: (media, desviacion, coeff_var)
-    """
     n = 0
     suma = 0.0
     # Calcular la suma de los elementos y contar cuantos hay
