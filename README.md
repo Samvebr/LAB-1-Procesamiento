@@ -122,7 +122,11 @@ texto += f"Canal {canal+1}:\nMedia = {media:.2f} mV\nDesv = {desviacion:.2f} mV\
     return texto
 ```
 ## Calculos estadísticos (Manual)
-
+• Se definen las variables n = 0 (contador de elementos) y suma = 0.0 (suma de valores).Se recorre la lista sumando los números y contando cuántos hay.
+• Se recorre datos con un for, sumando cada valor en suma e incrementando n. Si n == 0, se retorna (0,0,0). Luego, media = suma / n. Se divide la suma total entre la cantidad de números.
+• Se recorre datos otra vez, sumando (valor - media)^2 en suma_varianza. Luego, varianza = suma_varianza / n. Es decir, se vuelve a recorrer la lista, sumando las diferencias al cuadrado entre cada número y el promedio.
+•  Se obtiene la raíz cuadrada de la varianza: desviacion = varianza 
+• Si media ≠ 0, se calcula coeff_var = (desviacion / media) * 100; de lo contrario, es 0. Se retorna (media, desviacion, coeff_var).Si el promedio no es cero, se divide la desviación entre el promedio y se multiplica por 100. Finalmente, se devuelve el resultado.
 ```bash
 def calcular_estadisticas_manual(datos):
     """
