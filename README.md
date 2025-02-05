@@ -302,7 +302,7 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
 - Para graficar el ruido de pulso se introduce el ruido aleatorio con una amplitud de 0,9 y otro de 2,0, para cada nivel de ruido:
   
   1. Se copia la señal original.
-  2.Se agrega el ruido de pulso dependiendo de la amplitud.
+  2. Se agrega el ruido de pulso dependiendo de la amplitud.
   3. Se calcula el SNR entre la señal original y la ruidosa.
   4. Se genera el texto con los valores que se muestran en pantalla.
   5. Se grafica la señal modificada.
