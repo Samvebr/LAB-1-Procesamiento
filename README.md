@@ -100,7 +100,7 @@ coeff_var= (desviacion/media) * 100
 texto += f"Canal {canal+1}:\nMedia = {media::2f} mV\nDesv = {desviacion:.2f} mV
 return texto
 ```
-##Grafica.
+## Grafica.
 
   ![Image](https://github.com/user-attachments/assets/709e3189-dc1e-44c0-af7f-42c05e17f283)
 
@@ -109,7 +109,7 @@ Estadisticas del ECG:
 - Desviacion estandar: 0.3507 mV
 - coeficiente de variación: 5753.52 %
 
-##Histograma.
+## Histograma.
  
 Para la grafica del histograma y la densidad de probabilidad de la señal, se definió la función “calcular_estadisticas_y_histograma” que contiene los parámetros de senal,     canales y muestras_max, los otros comandos utilizados son:
 
@@ -193,14 +193,14 @@ for amplitud in [1.0, 3.0]:  # 1.0: amplitud pequeña, 3.0: amplitud grande
  
 
  
- # Grafica con amplitud 0.5
-![image](https://github.com/user-attachments/assets/e49eb09d-5c77-4795-873b-04f4b1644f86)
+ ### Grafica con amplitud 0.5
+
 
 - El valor del SNR para la señal ECG con ruido Gausiano de amplitud 1.0 es de -8.93 dB, al ser un valor negativo el SNR significa que la señal de ruido es mayor 8,93 db a  la señal original.
 
 
-# Grafica con amplitud 3.0
-![image](https://github.com/user-attachments/assets/b8906e02-f51f-402c-b252-1afe77891363)
+### Grafica con amplitud 3.0
+
 
 ## Artefacto:
 Se define la función “agregar_ruido_artefacto”, posteriormente se generan los siguientes pasos:
@@ -220,4 +220,20 @@ def agregar_ruido_artefacto(senal, muestra_max, amplitud= 1.0):
 ```
 - Posteriormente se llama la función anteriormente definida para ser graficada, tanto para una amplitud de 0,5 como para una amplitud de 2.0, modificando el parámetro de amplitud de la función, con la instrucción print se muestra en pantalla el valor del cálculo del SNR.
 
-  ```bash
+```bash
+print("\n---Ruido de artefacto---")
+for amplitud in [0.5, 2.0]:
+senal_artefacto = senal.copy()
+senal_artefacto = agregar_ruido_artefacto(senal_artefacto, muestras_max, amplitud=amplitud)
+snr_valores = calcular_SNR(senal, senal_artefacto, muestras_max)
+texto_SNR = general_texto_SNR(snr_valores, canales)
+print(f"SNR para el ruido de artefacto (amplitud={amplitud}):")
+print(texto_SNR)
+graficar_senal(tiempo, senal_artefacto, canales, tiempo_max, f"senal ECG con Ruido de Artefacto (amplitud={amplitud}) - Primeros 10 segundos")
+```
+- Obteniendo como resultado las siguientes graficas con amplitudes y SNR diferentes.
+
+### Grafica con amplitud 2.0
+
+### Grafica con amplitud 5.0
+
