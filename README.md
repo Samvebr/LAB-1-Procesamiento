@@ -48,7 +48,7 @@ senal, fs, canales, tiempo, df= leer_senal(nombre_registro)
 muestras_max = int(fs *tiempo_max)
 ```
 
-- La función leer_senal(nombre_registro) permite leer los archivos .dat y. hea, obtiene la señal de la matriz, la frecuencia de muestreo, establecer los nombres de los canales, la duración total en segundos y el DataFrame que organiza los datos de la señal y los asigna a un dato de tiempo, además muestra los datos en pantalla de la frecuencia de muestro, la duración de la señal y los canales donde se encuentra la matriz de datos.
+- La función leer_senal(nombre_registro) permite leer los archivos .dat y. hea, obtiene la señal de la matriz, la frecuencia de muestreo, establecer los nombres de los canales, la duración total en segundos y el DataFrame que organiza los datos de la señal y los asigna a un dato de tiempo, además muestra los datos en pantalla de la frecuencia de muestreo, la duración de la señal y los canales donde se encuentra la matriz de datos.
 
 ```bash
 record = wfdb.rdrecord(record_name)  # Lee los archivos .dat y .hea
