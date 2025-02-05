@@ -305,3 +305,9 @@ for amplitud in [0.9, 2.0]:  # 0.9: amplitud pequeña, 2.0: amplitud grande
   5. Se grafica la señal modificada.
  
 - A continuación, se muestran las graficas obtenidas de la señal contaminada con ruido de pulso:
+
+### Grafica con amplitud 0.9
+![Image](https://github.com/user-attachments/assets/506d4074-8faf-41d9-97a5-a5d21135335b)
+
+### Grafica con amplitud 2.0
+![Image](https://github.com/user-attachments/assets/1c3936aa-04d7-446b-b128-58de95c2da1c)
